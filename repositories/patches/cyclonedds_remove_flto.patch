@@ -1,0 +1,13 @@
+diff --git a/src/core/CMakeLists.txt b/src/core/CMakeLists.txt
+index ae69e651..57edad3b 100644
+--- a/src/core/CMakeLists.txt
++++ b/src/core/CMakeLists.txt
+@@ -44,7 +44,7 @@ if(ENABLE_LTO)
+       # Fixed in newer clang versions: https://reviews.llvm.org/D79919
+       # But fixed here to keep supported android api level as low as possible
+       # Tested with android ndk v20.0.5594570 (android api 29)
+-      set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -flto=full")
++      set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fpic")
+     else()
+       set_property(TARGET ddsc PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+       set_property(TARGET ddsc PROPERTY INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL TRUE)
