@@ -1,12 +1,24 @@
 """ Builds tinyxml2.
 """
 
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 load("@rules_cc//cc:defs.bzl", "cc_library")
+
+filegroup(
+    name = "tinyxml2_h",
+    srcs = ["tinyxml2.h"],
+)
+
+copy_file(
+    name = "copy_tinyxml2_h",
+    src = ":tinyxml2_h",
+    out = "includes/tinyxml2.h",
+)
 
 cc_library(
     name = "tinyxml2",
     srcs = ["tinyxml2.cpp"],
-    hdrs = ["tinyxml2.h"],
-    includes = ["."],
+    hdrs = [":copy_tinyxml2_h"],
+    includes = ["includes"],
     visibility = ["//visibility:public"],
 )

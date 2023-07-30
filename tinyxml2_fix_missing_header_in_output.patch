@@ -1,0 +1,26 @@
+diff --git a/repositories/tinyxml2.BUILD.bazel b/repositories/tinyxml2.BUILD.bazel
+index d95e2d8..4a8595b 100644
+--- a/repositories/tinyxml2.BUILD.bazel
++++ b/repositories/tinyxml2.BUILD.bazel
+@@ -1,12 +1,19 @@
+ """ Builds tinyxml2.
+ """
+ 
++load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+ load("@rules_cc//cc:defs.bzl", "cc_library")
+ 
++copy_file(
++    name = "copy_tinyxml2_h",
++    src = "tinyxml2.h",
++    out = "includes/tinyxml2.h",
++)
++
+ cc_library(
+     name = "tinyxml2",
+     srcs = ["tinyxml2.cpp"],
+-    hdrs = ["tinyxml2.h"],
+-    includes = ["."],
++    hdrs = ["includes/tinyxml2.h"],
++    includes = ["includes"],
+     visibility = ["//visibility:public"],
+ )
