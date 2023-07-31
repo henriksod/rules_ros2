@@ -24,38 +24,6 @@ config_setting(
 )
 
 selects.config_setting_group(
-    name = "build_type_debug_shm_off",
-    match_all = [
-        ":enable_shm_off",
-        "@com_github_mvukov_rules_ros2//ros2:build_type_debug",
-    ],
-)
-
-selects.config_setting_group(
-    name = "build_type_release_shm_off",
-    match_all = [
-        ":enable_shm_off",
-        "@com_github_mvukov_rules_ros2//ros2:build_type_release",
-    ],
-)
-
-selects.config_setting_group(
-    name = "build_type_debug_shm_on",
-    match_all = [
-        ":enable_shm_on",
-        "@com_github_mvukov_rules_ros2//ros2:build_type_debug",
-    ],
-)
-
-selects.config_setting_group(
-    name = "build_type_release_shm_on",
-    match_all = [
-        ":enable_shm_on",
-        "@com_github_mvukov_rules_ros2//ros2:build_type_release",
-    ],
-)
-
-selects.config_setting_group(
     name = "linux_or_macos",
     match_any = [
         "@platforms//os:linux",
@@ -123,15 +91,6 @@ cache_entries_without_shm = {
     "SHM_TRANSPORT_DEFAULT": "OFF",
 }
 
-cache_entries_debug = {
-    "CMAKE_BUILD_TYPE": "Debug",
-    "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/debug",
-}
-
-cache_entries_release = {
-    "CMAKE_BUILD_TYPE": "Release",
-}
-
 cmake(
     name = "fastrtps",
     build_args = [
@@ -140,25 +99,13 @@ cmake(
     ],
     cache_entries = select(
         {
-            ":build_type_debug_shm_off": dicts.add(
+            ":enable_shm_off": dicts.add(
                 cache_entries,
                 cache_entries_without_shm,
-                cache_entries_debug,
             ),
-            ":build_type_debug_shm_on": dicts.add(
+            ":enable_shm_on": dicts.add(
                 cache_entries,
                 cache_entries_with_shm,
-                cache_entries_debug,
-            ),
-            ":build_type_release_shm_off": dicts.add(
-                cache_entries,
-                cache_entries_without_shm,
-                cache_entries_release,
-            ),
-            ":build_type_release_shm_on": dicts.add(
-                cache_entries,
-                cache_entries_with_shm,
-                cache_entries_release,
             ),
         },
         no_match_error = "Unsupported build configuration",

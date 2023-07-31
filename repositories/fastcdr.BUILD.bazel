@@ -1,7 +1,6 @@
 """ Builds FastCDR.
 """
 
-load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
 
 filegroup(
@@ -21,33 +20,13 @@ cache_entries = {
     "EPROSIMA_INSTALLER": "OFF",
 }
 
-cache_entries_debug = {
-    "CMAKE_BUILD_TYPE": "Debug",
-}
-
-cache_entries_release = {
-    "CMAKE_BUILD_TYPE": "Release",
-}
-
 cmake(
     name = "fastcdr",
     build_args = [
         "--",
         "-j4",
     ],
-    cache_entries = select(
-        {
-            "@com_github_mvukov_rules_ros2//ros2:build_type_debug": dicts.add(
-                cache_entries,
-                cache_entries_debug,
-            ),
-            "@com_github_mvukov_rules_ros2//ros2:build_type_release": dicts.add(
-                cache_entries,
-                cache_entries_release,
-            ),
-        },
-        no_match_error = "Unsupported build type",
-    ),
+    cache_entries = cache_entries,
     lib_source = ":all_srcs",
     out_static_libs = ["libfastcdr.a"],
     visibility = ["//visibility:public"],
