@@ -34,11 +34,9 @@ build:clang --linkopt="-fuse-ld=lld"
 # To use FastDDS, invoke Bazel with `--config=fastdds`.
 build:fastdds --@com_github_mvukov_rules_ros2//ros2:dds_vendor=fastdds
 
-build:memcheck -c dbg
-build:memcheck --@com_github_mvukov_rules_ros2//ros2:build_type=Debug
-build:memcheck --define valgrind-memcheck=true
-test:memcheck --run_under=//tools/sanitizers/valgrind-memcheck
-run:memcheck --run_under=//tools/sanitizers/valgrind-memcheck
+# Debug config, invoke Bazel with `--config=debug`.
+build:debug -c dbg
+build:debug --@com_github_mvukov_rules_ros2//ros2:build_type=Debug
 
 # Load any settings specific to the current user.
 # user.bazelrc should appear in .gitignore so that settings are not shared with
