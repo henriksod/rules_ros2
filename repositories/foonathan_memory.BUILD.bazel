@@ -1,7 +1,10 @@
 """ Builds foonathan_memory.
 """
 
+load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
+
+VERSION = "0.7.3"
 
 filegroup(
     name = "all_srcs",
@@ -9,12 +12,19 @@ filegroup(
 )
 
 cache_entries = {
-    "CMAKE_BUILD_TYPE": "Release",
     "CMAKE_POSITION_INDEPENDENT_CODE": "ON",  # Must be set!
     "BUILD_SHARED_LIBS": "OFF",
     # foonathan_memory specific options.
     "FOONATHAN_MEMORY_BUILD_EXAMPLES": "OFF",
     "FOONATHAN_MEMORY_BUILD_TESTS": "OFF",
+}
+
+cache_entries_debug = {
+    "CMAKE_BUILD_TYPE": "Debug",
+}
+
+cache_entries_release = {
+    "CMAKE_BUILD_TYPE": "Release",
 }
 
 cmake(
@@ -23,8 +33,26 @@ cmake(
         "--",
         "-j4",
     ],
-    cache_entries = cache_entries,
+    cache_entries = select(
+        {
+            "@com_github_mvukov_rules_ros2//ros2:build_type_debug": dicts.add(
+                cache_entries,
+                cache_entries_debug,
+            ),
+            "@com_github_mvukov_rules_ros2//ros2:build_type_release": dicts.add(
+                cache_entries,
+                cache_entries_release,
+            ),
+        },
+        no_match_error = "Unsupported build type",
+    ),
     lib_source = ":all_srcs",
-    out_static_libs = ["libfoonathan_memory-0.7.3.a"],
+    out_static_libs = select(
+        {
+            "@com_github_mvukov_rules_ros2//ros2:build_type_debug": ["libfoonathan_memory-{}-dbg.a".format(VERSION)],
+            "@com_github_mvukov_rules_ros2//ros2:build_type_release": ["libfoonathan_memory-{}.a".format(VERSION)],
+        },
+        no_match_error = "Unsupported build type",
+    ),
     visibility = ["//visibility:public"],
 )

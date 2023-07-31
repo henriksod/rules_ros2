@@ -24,6 +24,38 @@ config_setting(
 )
 
 selects.config_setting_group(
+    name = "build_type_debug_shm_off",
+    match_all = [
+        ":enable_shm_off",
+        "@com_github_mvukov_rules_ros2//ros2:build_type_debug",
+    ],
+)
+
+selects.config_setting_group(
+    name = "build_type_release_shm_off",
+    match_all = [
+        ":enable_shm_off",
+        "@com_github_mvukov_rules_ros2//ros2:build_type_release",
+    ],
+)
+
+selects.config_setting_group(
+    name = "build_type_debug_shm_on",
+    match_all = [
+        ":enable_shm_on",
+        "@com_github_mvukov_rules_ros2//ros2:build_type_debug",
+    ],
+)
+
+selects.config_setting_group(
+    name = "build_type_release_shm_on",
+    match_all = [
+        ":enable_shm_on",
+        "@com_github_mvukov_rules_ros2//ros2:build_type_release",
+    ],
+)
+
+selects.config_setting_group(
     name = "linux_or_macos",
     match_any = [
         "@platforms//os:linux",
@@ -69,7 +101,6 @@ filegroup(
 )
 
 cache_entries = {
-    "CMAKE_BUILD_TYPE": "Release",
     "CMAKE_POSITION_INDEPENDENT_CODE": "ON",  # Must be set!
     "BUILD_SHARED_LIBS": "OFF",
     # FastDDS specific options.
@@ -85,13 +116,19 @@ cache_entries = {
 }
 
 cache_entries_with_shm = {
-    "FASTDDS_SHM_TRANSPORT_DISABLED": "OFF",
     "SHM_TRANSPORT_DEFAULT": "ON",
 }
 
 cache_entries_without_shm = {
-    "FASTDDS_SHM_TRANSPORT_DISABLED": "ON",
     "SHM_TRANSPORT_DEFAULT": "OFF",
+}
+
+cache_entries_debug = {
+    "CMAKE_BUILD_TYPE": "Debug",
+}
+
+cache_entries_release = {
+    "CMAKE_BUILD_TYPE": "Release",
 }
 
 cmake(
@@ -102,13 +139,25 @@ cmake(
     ],
     cache_entries = select(
         {
-            ":enable_shm_on": dicts.add(
-                cache_entries,
-                cache_entries_with_shm,
-            ),
-            ":enable_shm_off": dicts.add(
+            ":build_type_debug_shm_off": dicts.add(
                 cache_entries,
                 cache_entries_without_shm,
+                cache_entries_debug,
+            ),
+            ":build_type_debug_shm_on": dicts.add(
+                cache_entries,
+                cache_entries_with_shm,
+                cache_entries_debug,
+            ),
+            ":build_type_release_shm_off": dicts.add(
+                cache_entries,
+                cache_entries_without_shm,
+                cache_entries_release,
+            ),
+            ":build_type_release_shm_on": dicts.add(
+                cache_entries,
+                cache_entries_with_shm,
+                cache_entries_release,
             ),
         },
         no_match_error = "Unsupported build configuration",
