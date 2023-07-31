@@ -68,6 +68,27 @@ py_binary(
 )
 
 string_flag(
+    name = "build_type",
+    build_setting_default = "Release",
+    values = [
+        "Release",
+        "Debug",
+    ],
+)
+
+config_setting(
+    name = "build_type_debug",
+    flag_values = {":build_type": "Debug"},
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "build_type_release",
+    flag_values = {":build_type": "Release"},
+    visibility = ["//visibility:public"],
+)
+
+string_flag(
     name = "dds_vendor",
     build_setting_default = "cyclonedds",
     values = [
