@@ -20,7 +20,7 @@ cache_entries = {
 }
 
 cache_entries_debug = {
-    "CMAKE_BUILD_TYPE": "Debug",
+    "CMAKE_BUILD_TYPE": "RelWithDebInfo",
 }
 
 cache_entries_release = {
@@ -47,12 +47,6 @@ cmake(
         no_match_error = "Unsupported build type",
     ),
     lib_source = ":all_srcs",
-    out_static_libs = select(
-        {
-            "@com_github_mvukov_rules_ros2//ros2:build_type_debug": ["libfoonathan_memory-{}-dbg.a".format(VERSION)],
-            "@com_github_mvukov_rules_ros2//ros2:build_type_release": ["libfoonathan_memory-{}.a".format(VERSION)],
-        },
-        no_match_error = "Unsupported build type",
-    ),
+    out_static_libs = ["libfoonathan_memory-{}.a".format(VERSION)],
     visibility = ["//visibility:public"],
 )

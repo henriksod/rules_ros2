@@ -22,7 +22,7 @@ cache_entries = {
 }
 
 cache_entries_debug = {
-    "CMAKE_BUILD_TYPE": "Debug",
+    "CMAKE_BUILD_TYPE": "RelWithDebInfo",
 }
 
 cache_entries_release = {
