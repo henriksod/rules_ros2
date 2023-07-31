@@ -21,7 +21,6 @@ cache_entries = {
 
 cache_entries_debug = {
     "CMAKE_BUILD_TYPE": "Debug",
-    "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/debug",
 }
 
 cache_entries_release = {
