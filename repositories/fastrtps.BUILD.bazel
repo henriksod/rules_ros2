@@ -142,12 +142,12 @@ cmake(
             ":build_type_debug_shm_off": dicts.add(
                 cache_entries,
                 cache_entries_without_shm,
-                cache_entries_debug,
+                # cache_entries_debug,
             ),
             ":build_type_debug_shm_on": dicts.add(
                 cache_entries,
                 cache_entries_with_shm,
-                cache_entries_debug,
+                # cache_entries_debug,
             ),
             ":build_type_release_shm_off": dicts.add(
                 cache_entries,

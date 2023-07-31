@@ -39,7 +39,7 @@ cmake(
         {
             "@com_github_mvukov_rules_ros2//ros2:build_type_debug": dicts.add(
                 cache_entries,
-                cache_entries_debug,
+                # cache_entries_debug,
             ),
             "@com_github_mvukov_rules_ros2//ros2:build_type_release": dicts.add(
                 cache_entries,
