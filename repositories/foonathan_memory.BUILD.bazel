@@ -3,8 +3,6 @@
 
 load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
 
-VERSION = "0.7.3"
-
 filegroup(
     name = "all_srcs",
     srcs = glob(["**"]),
@@ -26,6 +24,6 @@ cmake(
     ],
     cache_entries = cache_entries,
     lib_source = ":all_srcs",
-    out_static_libs = ["libfoonathan_memory-{}.a".format(VERSION)],
+    out_static_libs = ["libfoonathan_memory-0.7.3.a"],
     visibility = ["//visibility:public"],
 )

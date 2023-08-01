@@ -99,13 +99,13 @@ cmake(
     ],
     cache_entries = select(
         {
-            ":enable_shm_off": dicts.add(
-                cache_entries,
-                cache_entries_without_shm,
-            ),
             ":enable_shm_on": dicts.add(
                 cache_entries,
                 cache_entries_with_shm,
+            ),
+            ":enable_shm_off": dicts.add(
+                cache_entries,
+                cache_entries_without_shm,
             ),
         },
         no_match_error = "Unsupported build configuration",
